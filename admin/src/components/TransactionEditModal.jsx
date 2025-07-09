@@ -145,25 +145,6 @@ const TransactionEditModal = ({
             <div className="flex space-x-4">
                             <button
                 type="button"
-                onClick={() => onInputChange({ target: { name: "status", value: "success" } })}
-                disabled={editingTx?.isUpdated}
-                className={`flex-1 py-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                  formData.status === "success"
-                    ? "bg-green-500 text-white shadow-md"
-                    : editingTx?.isUpdated
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-gray-100 text-gray-700 hover:bg-green-100 hover:text-green-600 border border-gray-300"
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Thành công</span>
-                </div>
-              </button>
-              <button
-                type="button"
                 onClick={() => onInputChange({ target: { name: "status", value: "failed" } })}
                 disabled={editingTx?.isUpdated}
                 className={`flex-1 py-3 rounded-lg font-medium text-sm transition-all duration-200 ${
@@ -179,6 +160,25 @@ const TransactionEditModal = ({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                   <span>Thất bại</span>
+                </div>
+              </button>
+                            <button
+                type="button"
+                onClick={() => onInputChange({ target: { name: "status", value: "success" } })}
+                disabled={editingTx?.isUpdated}
+                className={`flex-1 py-3 rounded-lg font-medium text-sm transition-all duration-200 ${
+                  formData.status === "success"
+                    ? "bg-green-500 text-white shadow-md"
+                    : editingTx?.isUpdated
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-gray-100 text-gray-700 hover:bg-green-100 hover:text-green-600 border border-gray-300"
+                }`}
+              >
+                <div className="flex items-center justify-center space-x-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Thành công</span>
                 </div>
               </button>
             </div>
@@ -228,9 +228,6 @@ const TransactionEditModal = ({
               </div>
             ) : (
               <div className="flex items-center justify-center space-x-2">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
                 <span>Lưu</span>
               </div>
             )}

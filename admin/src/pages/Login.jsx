@@ -33,7 +33,7 @@ const Login = ({ setIsLoggedIn }) => {
       setLoading(true);
       try {
         const response = await axios.post(
-          "http://localhost:8001/api/auth/login",
+          "http://localhost:8001/api/admin/login",
           values
         );
 
