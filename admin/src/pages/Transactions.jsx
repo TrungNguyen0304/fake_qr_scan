@@ -6,11 +6,13 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
+  X,
+  Loader2,
 } from "lucide-react";
 import TransactionEditModal from "../components/TransactionEditModal";
 
 // TransactionRow Component
-const TransactionRow = ({ tx, onEdit }) => {
+const TransactionRow = ({ tx, onEdit, onDelete }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "success":
@@ -68,7 +70,6 @@ const TransactionRow = ({ tx, onEdit }) => {
         <div className="flex items-center justify-center">
           <div className="text-gray-900 font-medium text-sm sm:text-base">
             {tx.clientId}
-            {/* {tx.clientId.split("-")[1]} */}
           </div>
         </div>
       </td>
@@ -100,7 +101,10 @@ const TransactionRow = ({ tx, onEdit }) => {
           >
             <Edit className="w-4 h-4" />
           </button>
-          <button className="p-1 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+          <button
+            className="p-1 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            onClick={() => onDelete(tx)}
+          >
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
@@ -109,11 +113,64 @@ const TransactionRow = ({ tx, onEdit }) => {
   );
 };
 
+// Delete Confirmation Modal Component
+const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, transactionId, isDeleting }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Xác nhận xóa giao dịch
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+            disabled={isDeleting}
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <p className="text-gray-600 mb-6">
+          Bạn có chắc chắn muốn xóa giao dịch #{transactionId} không? Hành động này không thể hoàn tác.
+        </p>
+        <div className="flex justify-end space-x-3">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+            disabled={isDeleting}
+          >
+            Hủy
+          </button>
+          <button
+            onClick={onConfirm}
+            className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 flex items-center"
+            disabled={isDeleting}
+          >
+            {isDeleting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Đang xóa...
+              </>
+            ) : (
+              "Xóa"
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Transactions Component
 const Transactions = () => {
   const [list, setList] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [editingTx, setEditingTx] = useState(null);
+  const [deletingTxId, setDeletingTxId] = useState(null);
   const [formData, setFormData] = useState({
     clientId: "",
     amount: "",
@@ -145,7 +202,7 @@ const Transactions = () => {
           clientId: `client-${payment.clientKeyId._id}`,
           amount: payment.amount,
           status: payment.status,
-          isUpdated: ["success", "failed"].includes(payment.status), // Mark as updated if status is success or failed
+          isUpdated: ["success", "failed"].includes(payment.status),
         }));
         setList(mappedData);
         setError(null);
@@ -167,6 +224,49 @@ const Transactions = () => {
       status: tx.status,
     });
     setIsModalOpen(true);
+  };
+
+  const handleDeleteClick = (tx) => {
+    setDeletingTxId(tx.id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(
+        `http://localhost:8001/api/admin/delete/${deletingTxId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Xóa giao dịch thất bại.");
+      }
+
+      setList(list.filter((tx) => tx.id !== deletingTxId));
+      setIsDeleteModalOpen(false);
+      setDeletingTxId(null);
+      setError(null);
+    } catch (err) {
+      console.error("Lỗi khi xóa giao dịch:", err);
+      setError(err.message || "Lỗi máy chủ khi xóa giao dịch.");
+      setIsDeleteModalOpen(false);
+      setDeletingTxId(null);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+    setDeletingTxId(null);
   };
 
   const handleSave = async () => {
@@ -285,7 +385,7 @@ const Transactions = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 Ono h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           </div>
           <div className="flex space-x-2">
             {["all", "pending", "success", "failed"].map((status) => (
@@ -310,7 +410,7 @@ const Transactions = () => {
           </div>
         </div>
 
-        {/* Edit Modal */}
+        {/* Modals */}
         <TransactionEditModal
           isOpen={isModalOpen}
           editingTx={editingTx}
@@ -318,6 +418,13 @@ const Transactions = () => {
           onInputChange={handleInputChange}
           onSave={handleSave}
           onCancel={handleCancel}
+        />
+        <DeleteConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
+          transactionId={deletingTxId}
+          isDeleting={isDeleting}
         />
 
         {/* Table */}
@@ -398,7 +505,10 @@ const Transactions = () => {
                       >
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button className="p-1 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                      <button
+                        className="p-1 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        onClick={() => handleDeleteClick(tx)}
+                      >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -431,7 +541,12 @@ const Transactions = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {paginatedList?.map((tx) => (
-                    <TransactionRow key={tx.id} tx={tx} onEdit={handleEdit} />
+                    <TransactionRow
+                      key={tx.id}
+                      tx={tx}
+                      onEdit={handleEdit}
+                      onDelete={handleDeleteClick}
+                    />
                   ))}
                 </tbody>
               </table>
