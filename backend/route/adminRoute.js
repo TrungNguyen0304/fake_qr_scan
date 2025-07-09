@@ -18,7 +18,7 @@ router.put("/payment/:paymentId", authenticateJWT, updatePayment);
 
 router.get("/", authenticateJWT, showAll);
 
-router.get("/payment/:paymentId", findById);
+
 
 router.delete("/delete/:paymentId", deletePayment);
 

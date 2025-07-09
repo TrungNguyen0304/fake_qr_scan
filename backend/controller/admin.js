@@ -79,40 +79,6 @@ const updatePayment = (req, res) => {
     });
 };
 
-const showAll = (req, res) => {
-  Payment.find()
-    .populate("clientKeyId", "callbackUrl")
-    .sort({ createdAt: -1 })
-    .then((payments) => {
-      res.json({ count: payments.length, payments });
-    })
-    .catch((err) => {
-      console.error("Lỗi khi lấy danh sách giao dịch:", err);
-      res
-        .status(500)
-        .json({ message: "Lỗi máy chủ khi lấy danh sách giao dịch." });
-    });
-};
-
-const findById = (req, res) => {
-  const { paymentId } = req.params;
-
-  Payment.findById(paymentId)
-    .populate("clientKeyId", "callbackUrl")
-    .then((payment) => {
-      if (!payment) {
-        return res.status(404).json({
-          message: "không tìm thấy id giao dịch",
-        });
-      }
-      res.json({ payment });
-    })
-    .catch((err) => {
-      console.error("Lỗi khi tìm giao dịch:", err);
-      res.status(500).json({ message: "Lỗi máy chủ khi tìm giao dịch." });
-    });
-};
-
 const deletePayment = (req, res) => {
   const { paymentId } = req.params;
 
