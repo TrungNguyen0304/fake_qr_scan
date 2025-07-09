@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FiPieChart, FiList, FiLogOut, FiMenu, FiX } from "react-icons/fi";
+import { FiList, FiLogOut, FiMenu, FiX } from "react-icons/fi";
 
 const Sidebar = ({ onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,14 +45,6 @@ const Sidebar = ({ onLogout }) => {
 
         {/* Nav links */}
         <nav className="p-4 flex flex-col gap-2">
-          <NavLink
-            to="/dashboard"
-            className={navClass}
-            end
-            onClick={() => setIsOpen(false)}
-          >
-            <FiPieChart size={20} /> Dashboard
-          </NavLink>
           <NavLink
             to="/transactions"
             className={navClass}

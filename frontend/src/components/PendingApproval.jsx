@@ -75,7 +75,7 @@ const PendingApproval = () => {
                 <FiLoader className="text-blue-600 mt-1 flex-shrink-0" />
                 <div className="text-left">
                   <p className="text-sm font-medium text-blue-800">
-                    Thông tin giao dịch
+                    Thông tin giao dịch 
                   </p>
                   <p className="text-xs text-blue-600 mt-1">ID: {paymentId}</p>
                 </div>

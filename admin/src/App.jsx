@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
-import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import TransactionDetail from "./pages/TransactionDetail";
 import Login from "./pages/Login";
@@ -24,7 +23,7 @@ const App = () => {
 
   // AuthRoute to prevent logged-in users from accessing login page
   const AuthRoute = ({ children }) => {
-    return !isLoggedIn ? children : <Navigate to="/dashboard" replace />;
+    return !isLoggedIn ? children : <Navigate to="/transactions" replace />;
   };
 
   return (
@@ -46,14 +45,6 @@ const App = () => {
                 <AuthRoute>
                   <Login setIsLoggedIn={setIsLoggedIn} />
                 </AuthRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
               }
             />
             <Route
