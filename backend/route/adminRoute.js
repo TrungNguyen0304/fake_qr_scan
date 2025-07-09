@@ -4,7 +4,6 @@ const {
   login,
   updatePayment,
   showAll,
-  findById,
   deletePayment,
 } = require("../controller/admin");
 const authenticateJWT = require("../middleware/authenticateJWT");
@@ -17,8 +16,6 @@ router.get("/profile", authenticateJWT, (req, res) => {
 router.put("/payment/:paymentId", authenticateJWT, updatePayment);
 
 router.get("/", authenticateJWT, showAll);
-
-
 
 router.delete("/delete/:paymentId", deletePayment);
 
