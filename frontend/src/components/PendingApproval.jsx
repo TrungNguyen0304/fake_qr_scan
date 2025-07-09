@@ -8,7 +8,7 @@ const PendingApproval = () => {
   const { paymentId } = useParams();
   const [status, setStatus] = useState("loading");
 
-  const SERVER_BASE = "http://192.168.1.17:8001";
+  const SERVER_BASE = "http://192.168.1.24:8001";
 
   useEffect(() => {
     if (!paymentId) {
@@ -41,7 +41,6 @@ const PendingApproval = () => {
       } else if (status === "failed") {
         setStatus("failed");
         localStorage.removeItem("clientId");
-        setTimeout(() => navigate("/home/register"), 1000);
       }
     });
 
@@ -66,8 +65,7 @@ const PendingApproval = () => {
                 Đang chờ xác nhận
               </h2>
               <p className="text-gray-600 text-sm md:text-base leading-relaxed px-4">
-                Giao dịch của bạn đã được gửi thành công. Quản trị viên đang xử
-                lý yêu cầu của bạn.
+                Giao dịch của bạn đang được xử lý. Vui lòng đợi trong giây lát.
               </p>
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mx-4">
@@ -80,17 +78,6 @@ const PendingApproval = () => {
                   <p className="text-xs text-blue-600 mt-1">ID: {paymentId}</p>
                 </div>
               </div>
-            </div>
-            <div className="flex justify-center space-x-2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
-              <div
-                className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"
-                style={{ animationDelay: "0.1s" }}
-              ></div>
-              <div
-                className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"
-                style={{ animationDelay: "0.2s" }}
-              ></div>
             </div>
           </div>
         );
@@ -156,18 +143,6 @@ const PendingApproval = () => {
             </h1>
           </div>
           <div className="p-6 md:p-8">{renderStatusContent()}</div>
-          <div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
-            <p className="text-xs text-gray-500 text-center">
-              Nếu có thắc mắc, vui lòng liên hệ bộ phận hỗ trợ
-              <br />
-              <a
-                href="mailto:support@example.com"
-                className="text-blue-600 hover:underline"
-              >
-                support@example.com
-              </a>
-            </p>
-          </div>
         </div>
       </div>
     </div>
