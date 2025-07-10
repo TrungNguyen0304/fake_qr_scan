@@ -94,14 +94,13 @@ const showAll = (req, res) => {
     });
 };
 
-
 const deletePayment = (req, res) => {
   const { paymentId } = req.params;
 
   Payment.findByIdAndDelete(paymentId)
     .then((deletedPayment) => {
       if (!deletedPayment) {
-        res.status(404).json({
+        res.status(404).json({  
           message: "không tim thấy id giao dịch",
         });
       }

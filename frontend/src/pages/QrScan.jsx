@@ -8,7 +8,7 @@ const QrScan = () => {
 
   useEffect(() => {
     // Initialize Socket.IO connection
-    const socket = io('http://192.168.1.24:8001');
+    const socket = io('http://192.168.1.17:8001');
 
     console.log('📦 QR Scanned for paymentId:', paymentId);
     socket.emit('join-payment-room', paymentId);

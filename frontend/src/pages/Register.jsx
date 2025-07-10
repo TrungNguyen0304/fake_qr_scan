@@ -24,7 +24,7 @@ const Register = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:8001/api/clients/create", {
+      const res = await fetch("https://apitaskmanager.pdteam.net/api/clients/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ callbackUrl }),

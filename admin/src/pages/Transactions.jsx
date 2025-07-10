@@ -193,7 +193,7 @@ const Transactions = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch("http://localhost:8001/api/admin", {
+        const response = await fetch("https://apitaskmanager.pdteam.net/api/admin", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -206,7 +206,7 @@ const Transactions = () => {
         const data = await response.json();
         const mappedData = data.payments.map((payment) => ({
           id: payment._id,
-          clientId: `client-${payment.clientKeyId._id}`,
+         clientId: payment.clientKeyId?._id ? `client-${payment.clientKeyId._id}` : "N/A",
           amount: payment.amount,
           status: payment.status,
           isUpdated: ["success", "failed"].includes(payment.status),
@@ -242,7 +242,7 @@ const Transactions = () => {
     setIsDeleting(true);
     try {
       const response = await fetch(
-        `http://localhost:8001/api/admin/delete/${deletingTxId}`,
+        `https://apitaskmanager.pdteam.net/api/admin/delete/${deletingTxId}`,
         {
           method: "DELETE",
           headers: {
@@ -279,7 +279,7 @@ const Transactions = () => {
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8001/api/admin/payment/${editingTx.id}`,
+        `https://apitaskmanager.pdteam.net/api/admin/payment/${editingTx.id}`,
         {
           method: "PUT",
           headers: {

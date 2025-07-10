@@ -24,7 +24,7 @@ function sendCallback(clientId, paymentId, status) {
         })
         .catch(err => {
           attempt++;
-          console.warn(`⚠️ Attempt ${attempt} failed to send callback to ${callbackUrl}: ${err.message}`);
+          console.warn(`Attempt ${attempt} failed to send callback to ${callbackUrl}: ${err.message}`);
           if (attempt < 3) {
             trySend(); // retry
           } else {

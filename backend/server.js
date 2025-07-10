@@ -7,7 +7,7 @@ const cors = require("cors");
 
 const clientRoute = require("./route/clientRoute");
 const qrcodeRoute = require("./route/qrcodeRoute");
-const adminRoute = require("./route/adminRoute")
+const adminRoute = require("./route/adminRoute");
 
 const { init } = require("./socket/socketInstance");
 
@@ -27,6 +27,7 @@ app.use(
       "http://localhost:5173",
       "http://localhost:5174",
       "http://192.168.1.24:5173",
+      "https://apitaskmanager.pdteam.net",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

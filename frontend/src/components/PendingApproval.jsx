@@ -8,7 +8,7 @@ const PendingApproval = () => {
   const { paymentId } = useParams();
   const [status, setStatus] = useState("loading");
 
-  const SERVER_BASE = "http://192.168.1.24:8001";
+  const SERVER_BASE = "http://192.168.1.17:8001";
 
   useEffect(() => {
     if (!paymentId) {
@@ -116,9 +116,6 @@ const PendingApproval = () => {
               <h2 className="text-2xl md:text-3xl font-bold text-red-600">
                 Giao dịch thất bại
               </h2>
-              <p className="text-gray-600 text-sm md:text-base">
-                Đang chuyển hướng đến trang đăng ký...
-              </p>
             </div>
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 mx-4">
               <p className="text-sm text-red-800">
