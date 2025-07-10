@@ -12,7 +12,7 @@ const CreateQr = () => {
   const [qrUrl, setQrUrl] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
   const navigate = useNavigate();
-  const SERVER_BASE = "http://192.168.1.17:8001";
+  const SERVER_BASE = "https://apitaskmanager.pdteam.net";
 
   const validationSchema = Yup.object({
     amount: Yup.string()

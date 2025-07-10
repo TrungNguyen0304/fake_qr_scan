@@ -8,7 +8,7 @@ const PendingApproval = () => {
   const { paymentId } = useParams();
   const [status, setStatus] = useState("loading");
 
-  const SERVER_BASE = "http://192.168.1.17:8001";
+  const SERVER_BASE = "https://apitaskmanager.pdteam.net";
 
   useEffect(() => {
     if (!paymentId) {
