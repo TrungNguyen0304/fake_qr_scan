@@ -21,7 +21,7 @@ const generateQRCode = (req, res) => {
         amount,
         status: "pending",
       }).then((payment) => {
-        const serverURL = "http://192.168.1.17:5173";
+        const serverURL = "https://fakeqrbanking.pdteam.net";
         const qrURL = `${serverURL}/home/pending-approval/${payment._id}`;
         console.log(qrURL);
 
