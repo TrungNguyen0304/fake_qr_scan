@@ -28,6 +28,7 @@ app.use(
       "http://localhost:5174",
       "http://192.168.1.24:5173",
       "https://apitaskmanager.pdteam.net",
+      "fakeqrbanking.pdteam.net",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
